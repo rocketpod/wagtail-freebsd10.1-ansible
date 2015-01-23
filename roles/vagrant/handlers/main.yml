@@ -1,0 +1,10 @@
+---
+# Vagrant spesific handlers
+
+- name: start lockd
+  service: name=lockd state=started
+  sudo: true
+
+- name: start statd
+  service: name=statd state=started
+  sudo: true

@@ -1,0 +1,13 @@
+---
+-
+  hosts: all
+  user: vagrant
+  sudo: false
+  vars:
+    user: vagrant
+    project_name: app
+    project_root: /home/vagrant/{{ project_name }}
+    django_settings_module: "{{ project_name }}.settings.dev"
+  roles:
+    - vagrant
+    - wagtail

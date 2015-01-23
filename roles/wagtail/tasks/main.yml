@@ -1,0 +1,45 @@
+---
+# Wagtail spesific tasks
+
+- name: Ensure pkg is up to date
+  shell: ALWAYS_ASSUME_YES=1 yes | pkg upgrade
+  sudo: true
+
+- name: Install required system packages
+  pkgng: name={{ item }} state=present
+  with_items:
+    system_packages
+  sudo: true
+
+- name: Install required python packages
+  pip: name={{ item }} state=present
+  with_items:
+    python_packages
+  sudo: true
+
+- name: Create virtualenv
+  command: virtualenv {{ virtualenv_path }}
+  ignore_errors: true
+  sudo: true
+  sudo_user: "{{ user }}"
+
+
+# GCC and a shell command (rather than the usual pip Ansible module) as a work-
+# around for a bug in libsass-python when compiling with CLANG.
+- name: Install requirements
+  shell: >
+    CXX=g++
+    CC=gcc48
+    CFLAGS="-I/usr/local/include"
+    {{ project_root }}/env/bin/pip install
+    -r {{ project_root }}/requirements.txt
+  sudo: true
+  sudo_user: "{{ user }}"
+
+- name: Run manage.py migrate
+  django_manage: command="migrate --noinput"
+                 app_path={{ project_root }}
+                 settings={{ django_settings_module }}
+                 virtualenv={{ virtualenv_path }}
+  sudo: true
+  sudo_user: "{{ user }}"

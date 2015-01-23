@@ -1,0 +1,21 @@
+---
+# Vagrant spesific tasks
+
+# Required to enable file based locks on NFS shares
+- name: Enable lockd
+  lineinfile: dest=/etc/rc.conf
+              regexp=^rpc_lockd_enable=
+              line='rpc_lockd_enable="YES"'
+  notify:
+    - start lockd
+  sudo: true
+
+# Required to enable file based locks on NFS shares
+- name: Enable statd
+  lineinfile: dest=/etc/rc.conf
+              regexp=^rpc_statd_enable=
+              line='rpc_statd_enable="YES"'
+  notify:
+    - start statd
+  sudo: true
+

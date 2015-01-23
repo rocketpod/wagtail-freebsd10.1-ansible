@@ -1,0 +1,16 @@
+---
+# Wagtail default variable declarations
+
+system_packages:
+  - gcc48
+  - python27
+  - py27-tkinter
+  - py27-sqlite3
+
+python_packages:
+  - virtualenv
+  - virtualenvwrapper
+  - stevedore
+  - virtualenv-clone
+
+virtualenv_path: "{{ project_root }}/env"
